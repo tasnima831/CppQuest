@@ -1,0 +1,36 @@
+package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class FunctionsPage extends JFrame {
+    public FunctionsPage() {
+        setTitle("C++ Functions");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Topic Information
+        JLabel infoLabel = new JLabel("<html><h1>C++ Functions</h1><br>" +
+                "Functions are blocks of code that perform a specific task.<br>" +
+                "Example: int add(int a, int b) { return a + b; }</html>", SwingConstants.CENTER);
+        panel.add(infoLabel, BorderLayout.CENTER);
+
+        // Back Button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            // Go back to Learning Page
+            LearningPage learningPage = new LearningPage();
+            learningPage.setVisible(true);
+            dispose(); // Close the current window
+        });
+        panel.add(backButton, BorderLayout.SOUTH);
+
+        // Add Panel to Frame
+        add(panel);
+    }
+}
