@@ -1,0 +1,41 @@
+package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ClassesPage extends JFrame {
+    public ClassesPage() {
+        setTitle("C++ Classes");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Topic Information
+        JLabel infoLabel = new JLabel("<html><h1>C++ Classes</h1><br>" +
+                "Classes are blueprints for creating objects.<br>" +
+                "Example:<br>" +
+                "class MyClass {<br>" +
+                "&nbsp;&nbsp;public:<br>" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;int myNum;<br>" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;string myString;<br>" +
+                "};</html>", SwingConstants.CENTER);
+        panel.add(infoLabel, BorderLayout.CENTER);
+
+        // Back Button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            // Go back to Learning Page
+            LearningPage learningPage = new LearningPage();
+            learningPage.setVisible(true);
+            dispose(); // Close the current window
+        });
+        panel.add(backButton, BorderLayout.SOUTH);
+
+        // Add Panel to Frame
+        add(panel);
+    }
+}
