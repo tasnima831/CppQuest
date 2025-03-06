@@ -1,0 +1,117 @@
+package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class QuizPage extends JFrame {
+    private int currentQuestionIndex = 0;
+    private JLabel questionLabel;
+    private JButton[] optionButtons;
+    private JButton nextButton;
+
+    private String[][] quizData = {
+            {"What is the output of 'cout << 5 + 3;'?", "8", "53", "Error", "None", "8"},
+            {"Which keyword is used to define a class in C++?", "class", "struct", "object", "define", "class"},
+            {"What is a pointer in C++?", "A variable that stores a memory address", "A function", "A data type", "A loop", "A variable that stores a memory address"},
+            {"Which loop is used to iterate a block of code a specific number of times?", "for", "while", "do-while", "if", "for"}
+    };
+
+    public QuizPage() {
+        setTitle("CppQuest: Quiz Page");
+        setSize(800, 600); // Larger window size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(10, 10)); // Add spacing
+        panel.setBackground(new Color(240, 248, 255)); // Pastel background
+
+        // Question Label
+        questionLabel = new JLabel();
+        questionLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        questionLabel.setForeground(new Color(51, 51, 51)); // Dark gray text
+        panel.add(questionLabel, BorderLayout.NORTH);
+
+        // Options Panel
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new GridLayout(2, 2, 10, 10)); // Add spacing
+        optionsPanel.setBackground(new Color(240, 248, 255)); // Pastel background
+        optionButtons = new JButton[4];
+        for (int i = 0; i < 4; i++) {
+            optionButtons[i] = new JButton();
+            styleButton(optionButtons[i]);
+            optionButtons[i].addActionListener(new OptionButtonListener());
+            optionsPanel.add(optionButtons[i]);
+        }
+        panel.add(optionsPanel, BorderLayout.CENTER);
+
+        // Next Button
+        nextButton = new JButton("Next");
+        styleButton(nextButton);
+        nextButton.addActionListener(new NextButtonListener());
+        nextButton.setEnabled(false);
+        panel.add(nextButton, BorderLayout.SOUTH);
+
+        // Load the first question
+        loadQuestion(currentQuestionIndex);
+
+        // Add Panel to Frame
+        add(panel);
+    }
+
+    private void loadQuestion(int index) {
+        if (index < quizData.length) {
+            questionLabel.setText(quizData[index][0]);
+            for (int i = 0; i < 4; i++) {
+                optionButtons[i].setText(quizData[index][i + 1]);
+                optionButtons[i].setEnabled(true);
+            }
+            nextButton.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Quiz completed!");
+            dispose();
+            new LearningPage().setVisible(true);
+        }
+    }
+
+    private class OptionButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton selectedButton = (JButton) e.getSource();
+            String selectedAnswer = selectedButton.getText();
+            String correctAnswer = quizData[currentQuestionIndex][5];
+
+            if (selectedAnswer.equals(correctAnswer)) {
+                JOptionPane.showMessageDialog(QuizPage.this, "Correct!", "Result", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(QuizPage.this, "Incorrect! The correct answer is: " + correctAnswer, "Result", JOptionPane.ERROR_MESSAGE);
+            }
+
+            for (JButton button : optionButtons) {
+                button.setEnabled(false);
+            }
+
+            nextButton.setEnabled(true);
+        }
+    }
+
+    private class NextButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        }
+    }
+
+    // Method to style buttons
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(255, 209, 220)); // Pastel pink
+        button.setForeground(new Color(51, 51, 51)); // Dark gray text
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFocusPainted(false);
+    }
+}
