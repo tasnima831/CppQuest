@@ -1,0 +1,53 @@
+package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MainPage extends JFrame {
+    public MainPage() {
+        setTitle("CppQuest: C++ Learning App");
+        setSize(600, 400); // Larger window size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1));
+        panel.setBackground(new Color(240, 248, 255)); // Pastel background
+
+        // Title Label
+        JLabel titleLabel = new JLabel("CppQuest: C++ Learning App", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(51, 51, 51)); // Dark gray text
+        panel.add(titleLabel);
+
+        // Get Started Button
+        JButton getStartedButton = new JButton("Get Started");
+        styleButton(getStartedButton);
+        getStartedButton.addActionListener(e -> {
+            new SignupPage().setVisible(true);
+            dispose();
+        });
+        panel.add(getStartedButton);
+
+        // I Already Have an Account Button
+        JButton haveAccountButton = new JButton("I already have an account");
+        styleButton(haveAccountButton);
+        haveAccountButton.addActionListener(e -> {
+            new LoginPage().setVisible(true);
+            dispose();
+        });
+        panel.add(haveAccountButton);
+
+        // Add Panel to Frame
+        add(panel);
+    }
+
+    // Method to style buttons
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(255, 209, 220)); // Pastel pink
+        button.setForeground(new Color(51, 51, 51)); // Dark gray text
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFocusPainted(false);
+    }
+}
