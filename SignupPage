@@ -1,0 +1,80 @@
+package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class SignupPage extends JFrame {
+    public SignupPage() {
+        setTitle("Signup");
+        setSize(600, 400); // Larger window size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(5, 2, 10, 10)); // Add spacing
+        panel.setBackground(new Color(240, 248, 255)); // Pastel background
+
+        // Username
+        panel.add(createLabel("Username:"));
+        JTextField usernameField = new JTextField();
+        panel.add(usernameField);
+
+        // Password
+        panel.add(createLabel("Password:"));
+        JPasswordField passwordField = new JPasswordField();
+        panel.add(passwordField);
+
+        // Confirm Password
+        panel.add(createLabel("Confirm Password:"));
+        JPasswordField confirmPasswordField = new JPasswordField();
+        panel.add(confirmPasswordField);
+
+        // Signup Button
+        JButton signupButton = new JButton("Signup");
+        styleButton(signupButton);
+        signupButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
+            if (password.equals(confirmPassword)) {
+                User.username = username;
+                User.password = password;
+                JOptionPane.showMessageDialog(this, "Signup successful!");
+                new LearningPage().setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Passwords do not match");
+            }
+        });
+        panel.add(signupButton);
+
+        // Back Button
+        JButton backButton = new JButton("Back");
+        styleButton(backButton);
+        backButton.addActionListener(e -> {
+            new MainPage().setVisible(true);
+            dispose();
+        });
+        panel.add(backButton);
+
+        // Add Panel to Frame
+        add(panel);
+    }
+
+    // Method to create styled labels
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        label.setForeground(new Color(51, 51, 51)); // Dark gray text
+        return label;
+    }
+
+    // Method to style buttons
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(255, 209, 220)); // Pastel pink
+        button.setForeground(new Color(51, 51, 51)); // Dark gray text
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFocusPainted(false);
+    }
+}
