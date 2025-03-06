@@ -1,0 +1,36 @@
+package org.example;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class VariablesPage extends JFrame {
+    public VariablesPage() {
+        setTitle("C++ Variables");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Topic Information
+        JLabel infoLabel = new JLabel("<html><h1>C++ Variables</h1><br>" +
+                "Variables are containers for storing data values.<br>" +
+                "Example: int x = 5;</html>", SwingConstants.CENTER);
+        panel.add(infoLabel, BorderLayout.CENTER);
+
+        // Back Button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            // Go back to Learning Page
+            LearningPage learningPage = new LearningPage();
+            learningPage.setVisible(true);
+            dispose(); // Close the current window
+        });
+        panel.add(backButton, BorderLayout.SOUTH);
+
+        // Add Panel to Frame
+        add(panel);
+    }
+}
