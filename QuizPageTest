@@ -1,0 +1,70 @@
+package org.example;
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class QuizPageTest {
+
+    private QuizPage quizPage;
+
+    @BeforeEach
+    void setUp() {
+        quizPage = new QuizPage();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "What is 2 + 2?, 4",
+            "What is 3 * 3?, 9",
+            "What is 10 / 2?, 5"
+    })
+    void testQuizQuestions(String question, String answer) {
+        assertNotNull(question);
+        assertNotNull(answer);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Question1", "Question2", "Question3"})
+    void isQuestionValid(String question) {
+        assertNotNull(question);
+        assertFalse(question.isEmpty());
+    }
+
+    @Test
+    void testNullAssertions() {
+        assertNull(null, "Expected null");
+    }
+
+    @Test
+    void testTimeout() {
+        assertTimeout(Duration.ofMillis(100), () -> {
+            Thread.sleep(50); // Simulate a task that takes 50ms
+        }, "Task should complete within 100ms");
+    }
+
+    @Test
+    void testObjectReferences() {
+        String str1 = new String("Hello");
+        String str2 = new String("Hello");
+        assertNotSame(str1, str2, "str1 and str2 should not be the same object");
+    }
+
+    @Test
+    void testArrayEquality() {
+        int[] arr1 = {1, 2, 3};
+        int[] arr2 = {1, 2, 3};
+        assertArrayEquals(arr1, arr2, "Arrays should be equal");
+    }
+
+    @Test
+    void testLinesMatching() {
+        String text = "Hello\nWorld";
+        assertLinesMatch(text.lines().toList(), text.lines().toList(), "Lines should match");
+    }
+}
