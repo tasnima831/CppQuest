@@ -1,0 +1,143 @@
+package org.example;
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+
+import java.time.Duration;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class MainTest {
+
+    @BeforeAll
+    static void setUpAll() {
+        System.out.println("Setting up before all tests in MainTest.");
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        System.out.println("Cleaning up after all tests in MainTest.");
+    }
+
+    @BeforeEach
+    void setUp() {
+        System.out.println("Setting up before each test in MainTest.");
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println("Cleaning up after each test in MainTest.");
+    }
+
+    @Test
+    void testNullAssertions() {
+        assertNull(null, "Expected null");
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2, 3, 5",
+            "1, 2, 3",
+            "0, 1, 1"
+    })
+    void testAddition(int a, int b, int sum) {
+        assertEquals(sum, a + b, "Addition result mismatch");
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5})
+    void isPositive(int n) {
+        assertTrue(n > 0, n + " should be positive");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"TTT", "BBB", "YYY"})
+    void checkEmpty(String s) {
+        assertNotNull(s);
+        assertFalse(s.isEmpty());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Tisha, Akther, tisha@example.com",
+            "John, Doe, john@example.com",
+            "Jane, Smith, jane@example.com"
+    })
+    void nullCheck(String firstName, String lastName, String email) {
+        assertNotNull(firstName);
+        assertNotNull(lastName);
+        assertTrue(email.contains("@"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideNumbersForSum")
+    void sumTest(int a, int b, int sum) {
+        assertEquals(sum, a + b, "Sum should match");
+    }
+
+    private static Stream<Arguments> provideNumbersForSum() {
+        return Stream.of(
+                Arguments.of(2, 3, 5),
+                Arguments.of(1, 2, 3),
+                Arguments.of(0, 1, 1)
+        );
+    }
+
+    @Test
+    void testDivision() {
+        assertThrows(ArithmeticException.class, () -> {
+            int result = 5 / 0;
+        }, "Division by zero should throw ArithmeticException");
+
+        assertDoesNotThrow(() -> {
+            int result = 10 / 2;
+        }, "Valid division should not throw an exception");
+    }
+
+    @Test
+    void testTimeout() {
+        assertTimeout(Duration.ofMillis(100), () -> {
+            Thread.sleep(50); // Simulate a task that takes 50ms
+        }, "Task should complete within 100ms");
+    }
+
+    @Test
+    void testObjectReferences() {
+        String str1 = new String("Hello");
+        String str2 = new String("Hello");
+        assertNotSame(str1, str2, "str1 and str2 should not be the same object");
+    }
+
+    @Test
+    void testArrayEquality() {
+        int[] arr1 = {1, 2, 3};
+        int[] arr2 = {1, 2, 3};
+        assertArrayEquals(arr1, arr2, "Arrays should be equal");
+    }
+
+    @Test
+    void testLinesMatching() {
+        String text = "Hello\nWorld";
+        assertLinesMatch(text.lines().toList(), text.lines().toList(), "Lines should match");
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/test-data.csv", numLinesToSkip = 1)
+    void testAdditionFromFile(int a, int b, int sum) {
+        assertEquals(sum, a + b, "Addition result mismatch");
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/user-data.csv", numLinesToSkip = 1)
+    void testUserDetailsFromFile(String firstName, String lastName, String email) {
+        assertNotNull(firstName);
+        assertNotNull(lastName);
+        assertTrue(email.contains("@"));
+    }
+}
